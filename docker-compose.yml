@@ -1,4 +1,5 @@
 version: "3.8"
+<<<<<<< HEAD
 services:
         messaging:
                 image: 'rabbitmq:3.8.8-management'
@@ -20,3 +21,28 @@ services:
                         - 5000:5000
         back-end:
                 build: back-end/
+=======
+
+services:
+
+    messaging:
+        image: 'rabbitmq:3.8.8-management'
+        ports: 
+            - 15672:15672
+    db:
+        image: 'postgres'
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: example
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+    front-end:
+        build: front-end/
+        ports:
+            - 5000:5000
+    back-end:
+        build: back-end/
+>>>>>>> c6be1e10e3f1d98e52820da2a7c8f0924ba79ae7
