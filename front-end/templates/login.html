@@ -1,13 +1,29 @@
-<h2>Login</h2>
-<form method="post">
-	<div class="form-group">
-	        <label for="email">Email Address</label>
-	        <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
-	</div>
-	<div class="form-group">
-		<label for="password">Password</label>
-		<input type="password" name="password" class="form-control" id="password" placeholder="Password">
-	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
-</form>
-Don't have an account? <a href="/register">Register here!</a>
+<!DOCTYPE html>  
+ <html>  
+      <head>  
+           <title> QuizTime </title>  
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+      </head>  
+      <body>  
+           <br /><br />  
+           <div class="container" style="width:500px;">  
+                <h3 align="center">Welcome</h3>  
+                <br />  
+                <h3 align="center">Login</h3>  
+                <br />  
+                <form method="post">  
+                     <label>Enter Username</label>  
+                     <input type="text" name="username" class="form-control" />  
+                     <br />  
+                     <label>Enter Password</label>  
+                     <input type="password" name="password" class="form-control" />  
+                     <br />  
+                     <input type="submit" name="login" value="Login" class="btn btn-info" />  
+                     <br />  
+                     <p align="center"><a href="login.php">Register</a></p>  
+                </form>  
+           </div>  
+      </body>  
+ </html>
