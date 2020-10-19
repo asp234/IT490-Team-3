@@ -1,9 +1,5 @@
 import pika
 import time
-import psycopg2
-
-
-
 
 time.sleep(10)
 
