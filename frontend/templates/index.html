@@ -6,18 +6,29 @@
 	<h3>{{data}}</h3>
 	{% else %}
 
-	<a href="/logout">Logout</a> <br> <br>
+
 	<form action="" method="POST">
-	  <input type="username" name="username" placeholder="Instagram Username">
-	  <input type="submit" value="Finds">
+    	<a style="float: right" href="/logout">Logout</a> <br> <br>
+          <label>
+    <p class="label-txt">ENTER PRODUCT URL</p>
+	  <input class="input" type="username" name="username" placeholder="Instagram Username">
+    <div class="line-box">
+      <div class="line"></div>
+    </div>
+  </label>
+
+        <button type="submit">Finds</button>
 	</form>
 	{% endif %}
 
 {% else %}
-<p>Not login!</p>
 
-<a href="/login">Login</a> 
-<a href="/register">Register</a>
+
+<form action="/login" method="POST">
+  <p>Not login!</p>
+  <a type="button" href="/login" class="btn btn-primary">Login</a>
+  <a type="button" href="/register" class="btn btn-primary">Register Page</a>
+</form>
 
 {% endif %}
 {% endblock %}
