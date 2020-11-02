@@ -7,7 +7,7 @@ from instagram import getfollowedby, getname
 
 app = Flask(__name__)
 app.config.update(
-    SQLALCHEMY_DATABASE_URI='postgresql://root:pass@localhost:5432/database',
+    SQLALCHEMY_DATABASE_URI='postgresql://dmp73:gAbber90@localhost:5432/it490',
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 )
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:pass@localhost:5432/database'
