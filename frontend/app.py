@@ -1,9 +1,13 @@
-"""Flask Login Example and instagram fallowing find"""
+"""Flask Login Example and instagram following find"""
 
 from flask import Flask, url_for, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from instagram import getfollowedby, getname
 
+import time
+
+# give messaging a chance to start up
+time.sleep(30)
 
 app = Flask(__name__)
 app.config.update(
