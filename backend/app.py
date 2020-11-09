@@ -25,6 +25,7 @@ print(' [*] Connecting to the database...')
 postgres_user = os.environ['DB_USER']
 postgres_password = os.environ['DB_PASS']
 
+conn = None
 try:
     conn = psycopg2.connect(
         host='db',

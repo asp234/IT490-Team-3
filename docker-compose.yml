@@ -1,22 +1,36 @@
 version: "3.8"
+volumes:
+        db-data:
 services:
         messaging:
                 image: 'rabbitmq:3.8.8-management'
                 ports: 
                         - 15672:15672
+                environment:
+                        RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+                        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
         adminer:
                 image: adminer
                 ports:
                         - 8080:8080
         db:                
-                image: 'postgres' 
+                build: db/
                 environment:
-                        POSTGRES_PASSWORD: 'example'
-
-
+                        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+                volumes:
+                        - db-data:/var/lib/postgresql/data
         frontend:
                 build: frontend/
                 ports:
                         - 5000:5000
+                environment:
+                        RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+                        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
         backend:
                 build: backend/
+                environment:
+                        RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+                        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+                        DB_USER: 'postgres'
+                        DB_PASS: ${POSTGRES_PASSWORD}
+
