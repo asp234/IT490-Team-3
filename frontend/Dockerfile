@@ -1,20 +1,17 @@
-#FROM python
-#COPY . /app
-#WORKDIR /app
-#RUN pip install -r requirements.txt
-#ENV FLASK_APP=app.py
-#CMD ["./wait-for-it.sh", "messaging:5672", "--","flask", "run", "--host=localhost"]
+# base image
+FROM node:12.9.1
 
-FROM python
+# set working directory
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# add `/usr/src/backend/node_modules/.bin` to $PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-COPY . /app
+# install and cache backend dependencies
+COPY package.json /usr/src/app/package.json
+RUN npm install --silent
+#RUN npm install react-scripts@1.1.1 -g --silent
 
-RUN pip --no-cache-dir install -r requirements.txt
-
-EXPOSE 5000
-
-ENTRYPOINT  ["python"]
-
-CMD ["app.py"]
+# start backend
+CMD ["npm", "start"]
