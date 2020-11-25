@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +11,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
+import {api} from "../../utils/request";
+import MainContext from "../../context/main-context";
+import {navigate} from "../../utils/services";
 const axios = require("axios").default;
 const drawerWidth = 240;
 
@@ -94,12 +97,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props) {
+    const context = useContext(MainContext);
     const [open, setOpen] = React.useState(true);
     const [keyword, setKeyword] = React.useState('');
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+    useEffect(() => {
+        fetchProducts();
+    }, [])
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -121,6 +129,11 @@ export default function PrimarySearchAppBar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const handleLogout = () => {
+        localStorage.clear();
+        context.handleUpdateMainState({user: null});
+    }
+
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu
@@ -133,7 +146,7 @@ export default function PrimarySearchAppBar() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={() => {}}>Profile</MenuItem>
-            <MenuItem onClick={() => {}}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
     );
 
@@ -162,12 +175,12 @@ export default function PrimarySearchAppBar() {
         </Menu>
     );
 
-    const handleKeyPress = async (e) => {
+    const handleKeyPress = (e) => {
         if(e.keyCode === 13){
-            var options = {
+            const options = {
                 method: 'GET',
                 url: 'https://amazon-product-reviews-keywords.p.rapidapi.com/product/search',
-                params: {keyword: 'iphone', category: 'aps', country: 'US'},
+                params: {keyword: e.target.value, category: 'aps', country: 'US'},
                 headers: {
                     'x-rapidapi-key': 'a63dca9f08msh09539df4e2ab02bp112a4djsn44d5666aeb47',
                     'x-rapidapi-host': 'amazon-product-reviews-keywords.p.rapidapi.com'
@@ -175,20 +188,60 @@ export default function PrimarySearchAppBar() {
             };
 
             axios.request(options).then(function (response) {
-                console.log(response.data);
+                if (response.data && response.data.products && response.data.products.length) {
+                    response.data.products.forEach(d => {
+                        let product = {
+                            asin: d.asin,
+                            title: d.title,
+                            score: d.score,
+                            sponsored: d.sponsored,
+                            amazon_choice: d.amazon_choice,
+                            amazon_prime: d.amazon_prime,
+                            price: d.price.current_price,
+                            before_price: d.price.before_price,
+                            current_price: d.price.current_price,
+                            currency: d.price.currency,
+                            rating: d.reviews.rating,
+                            total_reviews: d.reviews.total_reviews,
+                            discounted: d.discounted,
+                            url: d.uri,
+                            thumbnail: d.thumbnail,
+                        };
+
+                        const isFoundProduct = context.products.findIndex(p => p.asin === product.asin);
+                        if (isFoundProduct === -1)
+                            createProduct(product);
+                    })
+
+                }
+                fetchProducts();
             }).catch(function (error) {
                 console.error(error);
             });
         }
     }
 
+    const createProduct = (product) => {
+        api('/product/products/', 'POST', product)
+            .then(res => {
+                console.log('res', res.data);
+            })
+    };
+
+    const fetchProducts = () => {
+        api('/product/products/', 'GET')
+            .then(res => {
+                context.handleUpdateMainState({products: res.data});
+            })
+    }
+
     return (
         <div className={classes.grow}>
             <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
+                position="static"
+                // className={clsx(classes.appBar, {
+                //     [classes.appBarShift]: open,
+                // })}
             >
                 <Toolbar>
                     <IconButton

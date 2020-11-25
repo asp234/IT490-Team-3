@@ -1,11 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from recipe import views
+from product import views
 
 
 router = DefaultRouter()
-router.register('products', views.RecipeViewSet)
+router.register('products', views.ProductViewSet)
 
 app_name = 'product'
 

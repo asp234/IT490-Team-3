@@ -5,7 +5,8 @@ import MainContext from "../context/main-context";
 
 class Index extends Component {
     state = {
-        user: null
+        user: null,
+        products: [],
     };
 
     componentWillMount() {

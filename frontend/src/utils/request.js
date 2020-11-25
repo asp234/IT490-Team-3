@@ -1,20 +1,17 @@
 import axios from 'axios';
-import {BASE_API_URL} from "./globals";
-import {loaderDisplay} from "./methods";
+import {CONFIG} from "../config";
 
-export const api = async (path,type,body = null) => {
-    loaderDisplay('block');
+export const api = async (path,type,body = null, params = null) => {
+    let token = localStorage.getItem('token');
     let instance = axios.create({
-        baseURL: BASE_API_URL,
+        baseURL: CONFIG.API_BASE_URL,
         method: type,
         data: body,
         headers: {
-            // 'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization' : `Bearer `}
+            'Authorization' : `Token ${token}`}
     });
-    let {data} = await instance(path);
-    loaderDisplay('none');
 
-    return data;
+    return instance(path);
 };

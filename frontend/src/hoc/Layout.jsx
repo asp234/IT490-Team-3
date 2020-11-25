@@ -10,7 +10,7 @@ const Layout = props => {
         <React.Fragment>
             <CssBaseline />
             <PrimarySearchAppBar/>
-            <AppDrawer/>
+            {/*<AppDrawer/>*/}
             <main>
                 {props.children}
             </main>

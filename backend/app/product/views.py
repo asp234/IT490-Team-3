@@ -56,7 +56,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         return [int(str_id) for str_id in qs.split(',')]
 
     def get_queryset(self):
-        """Retrieve the recipes for the authenticated user"""
+        """Retrieve the product for the authenticated user"""
         # tags = self.request.query_params.get('tags')
         # ingredients = self.request.query_params.get('ingredients')
         queryset = self.queryset
@@ -67,7 +67,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         #     ingredient_ids = self._params_to_ints(ingredients)
         #     queryset = queryset.filter(ingredients__id__in=ingredient_ids)
 
-        return queryset.filter(user=self.request.user)
+        return queryset.filter(user=self.request.user).order_by('-id')
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
