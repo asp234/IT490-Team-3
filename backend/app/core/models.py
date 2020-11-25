@@ -88,3 +88,29 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Product(models.Model):
+    """Product object"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    asin = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    score = models.CharField(max_length=255)
+    sponsored = models.BooleanField(default=False)
+    amazon_choice = models.BooleanField(default=False)
+    amazon_prime = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    before_price = models.DecimalField(max_digits=5, decimal_places=2)
+    current_price = models.DecimalField(max_digits=5, decimal_places=2)
+    currency = models.CharField(max_length=255, blank=True)
+    rating = models.CharField(max_length=255, blank=True)
+    total_reviews = models.CharField(max_length=255, blank=True)
+    discounted = models.BooleanField(default=False)
+    url = models.CharField(max_length=255, blank=True)
+    thumbnail = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title

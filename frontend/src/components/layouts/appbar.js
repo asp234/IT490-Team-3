@@ -11,9 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
-import axios from 'axios';
-import cherrio from 'cheerio';
-
+const axios = require("axios").default;
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -95,36 +93,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-async function getAmazonPrice(html) {
-    const $ = cherrio.load(html);
-
-    const span = $('#priceblock_dealprice');
-
-
-    return span.html();
-
-}
-
-async function getHTML(productURL) {
-    const { data: html } = await  axios.get(productURL, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'
-        }
-    })
-        .catch(function (error) {
-            console.log(error);
-        });
-    return html;
-}
-
-async function getAmazonModel(html) {
-    const $ = cherrio.load(html);
-
-    const span = $('#productTitle');
-
-
-    // return span.html();
-}
 
 export default function PrimarySearchAppBar() {
     const [open, setOpen] = React.useState(true);
@@ -196,17 +164,21 @@ export default function PrimarySearchAppBar() {
 
     const handleKeyPress = async (e) => {
         if(e.keyCode === 13){
-            console.log('value', e.target.value);
-            const { data: html } = await  axios.get('https://www.amazon.com/Wireless-Computer-Cimetech-Cordless-Ergonomic/dp/B07T8HFPDM/ref=sr_1_1_sspa?dchild=1&keywords=mouse&qid=1606257627&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUExNFVOMEUzQjIwWEUwJmVuY3J5cHRlZElkPUEwNzUzNDUyU1ZHTUpHMzQ0SE8xJmVuY3J5cHRlZEFkSWQ9QTA4Njk0NTgyTzdKU1M2OElMV1VQJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==', {
+            var options = {
+                method: 'GET',
+                url: 'https://amazon-product-reviews-keywords.p.rapidapi.com/product/search',
+                params: {keyword: 'iphone', category: 'aps', country: 'US'},
                 headers: {
-                    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'
+                    'x-rapidapi-key': 'a63dca9f08msh09539df4e2ab02bp112a4djsn44d5666aeb47',
+                    'x-rapidapi-host': 'amazon-product-reviews-keywords.p.rapidapi.com'
                 }
+            };
+
+            axios.request(options).then(function (response) {
+                console.log(response.data);
             }).catch(function (error) {
-                    console.log(error);
-                });
-
-            console.log('html', html);
-
+                console.error(error);
+            });
         }
     }
 
