@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,7 +11,6 @@ import Container from '@material-ui/core/Container';
 import MainContext from './../context/main-context';
 import Layout from "../hoc/Layout";
 import Rating from '@material-ui/lab/Rating';
-import {navigate} from "../utils/services";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,38 +42,59 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Home(props) {
+export default function ProductDetail(props) {
   const classes = useStyles();
-  const context = useContext(MainContext);
+  const [relatedProducts, setProducts] = useState([]);
+  const [product, setProduct] = useState({});
 
   useEffect(() => {
-    if (!context.user)
-      props.history.push('/login')
-  }, [context.user]);
+    if (props.location.state)
+        setProduct(props.location.state.product);
+  }, [props.location.state]);
 
-  const handleViewProduct = (product) => {
-      props.history.push({
-        pathname: `products/${product.id}`,
-        state: {product}
-      })
+  const fetchCompetitive = () => {
+
   }
+
 
   return (
     <Layout>
         {/* Hero unit */}
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
-            <Typography component="h1" variant="h4" align="center" color="textPrimary" >
-              Your suggested Products
-            </Typography>
+            <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image={product.thumbnail}
+                    title={product.title}
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {product.title}
+                    </Typography>
+                    <Typography>
+                      User Reviews: {product.total_reviews}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Typography component="legend">
+                      Price ${product.current_price}
+                    </Typography>
+                     <Typography component="legend">Rating</Typography>
+                    <Rating name="read-only" value={parseFloat(product.rating)} readOnly />
+                  </CardActions>
+                </Card>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {context.products && context.products.map((card) => (
+                  <Typography component="h1" variant="h4" align="center" color="textPrimary" >
+              Competitive Products
+            </Typography>
+            {relatedProducts && relatedProducts.map((card) => (
               <Grid item key={card.asin} xs={12} sm={6} md={4}>
-                <Card onClick={() => handleViewProduct(card)} className={classes.card}>
+                <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
                     image={card.thumbnail}
