@@ -25,7 +25,7 @@ export default function(ComposedClass) {
                 // Do something before request is sen
                 return config;
             }, function (error) {
-                loaderDisplay('none');
+                // loaderDisplay('none');
                 // Do something with request error
                 return Promise.reject(error);
             });
@@ -35,7 +35,7 @@ export default function(ComposedClass) {
                 // Do something with response data
                 return response;
             }, function (error) {
-                loaderDisplay('none');
+                // loaderDisplay('none');
                 // Do something with response error
                 return Promise.reject(error);
             });
